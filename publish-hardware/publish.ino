@@ -14,7 +14,7 @@ const char* BROKER_MQTT = "broker.mqtt-dashboard.com"; //URL do broker MQTT que 
 int BROKER_PORT = 1883;                      // Porta do Broker MQTT
 
 #define ID_MQTT  "MQTTSD23"            //Informe um ID unico e seu. Caso sejam usados IDs repetidos a ultima conexão irá sobrepor a anterior. 
-#define TOPIC_PUBLISH "temp-sd"    //Informe um Tópico único. Caso sejam usados tópicos em duplicidade, o último irá eliminar o anterior.
+#define TOPIC_PUBLISH "tag-rfid"    //Informe um Tópico único. Caso sejam usados tópicos em duplicidade, o último irá eliminar o anterior.
 PubSubClient MQTT(wifiClient);        // Instancia o Cliente MQTT passando o objeto espClient
 
 //Declaração das Funções
@@ -63,9 +63,9 @@ void conectaWiFi() {
   }
   
   Serial.println();
-  Serial.print("Conectado com sucesso, na rede: ");
+  Serial.print("Conectado com sucesso na rede: ");
   Serial.print(SSID);  
-  Serial.print("  IP obtido: ");
+  Serial.print("  IP : ");
   Serial.println(WiFi.localIP()); 
 }
 
@@ -74,12 +74,12 @@ void conectaMQTT() {
         Serial.print("Conectando ao Broker MQTT: ");
         Serial.println(BROKER_MQTT);
         if (MQTT.connect(ID_MQTT)) {
-            Serial.println("Conectado ao Broker com sucesso!");
+            Serial.println("Conectado ao Broker MQTT!");
         } 
         else {
-            Serial.println("Noo foi possivel se conectar ao broker.");
-            Serial.println("Nova tentatica de conexao em 10s");
-            delay(10000);
+            Serial.println("Não foi possivel se conectar ao broker.");
+            Serial.println("Tentando conectar novamente...");
+            delay(2000);
         }
     }
 }
@@ -87,12 +87,12 @@ void conectaMQTT() {
 void enviaValores() {
 
   //Botao Apertado     
-        MQTT.publish(TOPIC_PUBLISH, "1");
-        Serial.println("Botao1 APERTADO. Payload enviado.");
+        MQTT.publish(TOPIC_PUBLISH, "AA0B01");
+        Serial.println("Publish tag.");
   delay(2000);
   //Botao Solto
         MQTT.publish(TOPIC_PUBLISH, "0");
-        Serial.println("Botao1 SOLTO. Payload enviado.");
+        Serial.println("Publish 0");
     
 }
 
