@@ -2,6 +2,12 @@
 
 # Running
 
-## $cd backend
-## $yarn install
-## $yarn start
+## Backend
+### $cd backend
+### $yarn install
+### $yarn start
+
+## frontend
+### $cd frontend
+### $yarn install
+### $yarn start
