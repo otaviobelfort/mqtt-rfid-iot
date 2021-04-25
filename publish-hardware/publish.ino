@@ -1,12 +1,19 @@
 #include <ESP8266WiFi.h> 
 #include <PubSubClient.h>
-//#include <queue.h>
+#include <SPI.h> // Only needed for Arduino 1.6.5 and earlier
+#include <MFRC522.h>
 
 #define pinBotao1 12  //D6
+#define SS_PIN D2
+#define RST_PIN D1
 
 //WiFi
-const char* SSID = "****";                // SSID / nome da rede WiFi que deseja se conectar
-const char* PASSWORD = "******";   // Senha da rede WiFi que deseja se conectar
+const char* SSID = "OBS";                // SSID / nome da rede WiFi que deseja se conectar
+const char* PASSWORD = "otaviobelfort";   // Senha da rede WiFi que deseja se conectar
+
+//_____________________________
+// objetos
+MFRC522 mfrc522(SS_PIN, RST_PIN);
 WiFiClient wifiClient;                        
  
 //MQTT Server
@@ -27,6 +34,9 @@ void setup() {
   pinMode(pinBotao1, INPUT_PULLUP);         
 
   Serial.begin(115200);
+  SPI.begin();          // Inicia comunicação SPI bus
+  mfrc522.PCD_Init();   // Inicia MFRC522
+  Serial.println();
 
   conectaWiFi();
   MQTT.setServer(BROKER_MQTT, BROKER_PORT);   
@@ -97,4 +107,19 @@ void enviaValores() {
 }
 
 
+//_____________________________
+// retorna a tag do cartão
+String tag(String conteudo){
+  for (byte i = 0; i < mfrc522.uid.size; i++) 
+  {
+     Serial.print(mfrc522.uid.uidByte[i] < 0x10 ? "0" : "");
+     Serial.print(mfrc522.uid.uidByte[i], HEX);
+     conteudo.concat(String(mfrc522.uid.uidByte[i] < 0x10 ? "0" : ""));
+     conteudo.concat(String(mfrc522.uid.uidByte[i], HEX));
+  }
 
+  Serial.println();
+  conteudo.toUpperCase();
+
+  return conteudo.substring(0);
+}
