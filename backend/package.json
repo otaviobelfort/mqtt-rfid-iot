@@ -10,6 +10,8 @@
     "dev": "nodemon consumer.js"
   },
   "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
     "mqtt": "^4.2.6"
   },
   "devDependencies": {
