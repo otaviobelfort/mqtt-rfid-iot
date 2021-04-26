@@ -8,6 +8,6 @@
 ### $yarn start
 
 ## frontend
-### $cd frontend
+### $cd iotfrontend
 ### $yarn install
 ### $yarn start
