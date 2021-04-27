@@ -18,25 +18,6 @@ var leitor = readline.createInterface({
 });
 
 
-const tags = [
-    {
-        title: "AABB",
-        time: 6,
-    },
-    {
-        title: "AAAA",
-        time: 20,
-    },
-    {
-        title: "ABAB",
-        time: 10.0,
-    },
-    {
-        title: "BBBB",
-        time: 18.0,
-    },
-];
-
 var options1 = {
     port: 1883,
     host: 'mqtt://test.mosquitto.org/',
@@ -65,30 +46,36 @@ broker.on('connect', () => {
 
 });
 
+var tags = [
+    {   
+        tag: "E010591B",
+        nome: "Otávio Belfor",
+        input: "",
+        output: "", 
+        totalHoras: 0, 
+        data_str:""
+    },
+    {tag: "9AD2A839", nome: "José Vitor", input: "", output:"", totalHoras: 0, data_str:""},
+    {tag: "C123", nome: "Rodrigo Silva", input: "", output:"", totalHoras: 0, data_str:""},
+    {tag: "D123", nome: "Mario Gorge", input: "", output:"", totalHoras: 0, data_str:""},
+];
+
 app.listen(3333, () => {
     console.log('🚀 Back-end started!');
 });
 
 app.get('/tags', (request, response) => {
 
-    const { title } = request.query;
+    const {nome} = request.query;
     
-    const results = title
-        ? tags.filter(tag => tag.title.includes(title))
+    const results = nome
+        ? tags.filter(tag => tag.nome.includes(nome))
         : tags;
     
     return response.json(results);
 });
 
-var bd = [
-    {tag: "E010591B", nome: "Otávio Belfor", input: "", output: "", totalHoras: 0, data_str:""},
-    {tag: "9AD2A839", nome: "José Vitor", input: "", output:"", totalHoras: 0, data_str:""},
-    {tag: "C123", nome: "Rodrigo Silva", input: "", output:"", totalHoras: 0, data_str:""},
-    {tag: "D123", nome: "Mario Gorge", input: "", output:"", totalHoras: 0, data_str:""},
-];
-
 broker.on('message', (topic, message_tag) => {
-
 
 
     //var message_tag = "A123";
@@ -99,25 +86,25 @@ broker.on('message', (topic, message_tag) => {
    // message_tag = "A123";
 
    var a = message_tag.toString();
-   var b = bd[0].tag.toString();
+   var b = tags[0].tag.toString();
 
    //a.substring
     switch(message_tag.toString()){
        // console.log("BEM VENDO AOS SISPRO - BOM DIA 1" + message_tag );
 
-        case bd[0].tag.toString():
+        case tags[0].tag.toString():
             console.log("BEM VENDO AOS SISPRO - BOM DIA");
             if(cont == 0){
                 var atual = new Date();
                 var str_data = atual.toString();
                 
-                bd[0].input = str_data.substring(0,str_data.indexOf(":") + 6);
-                //bd[0].totalHoras = 0;
-                bd[0].data_str = atual;
+                tags[0].input = str_data.substring(0,str_data.indexOf(":") + 6);
+                //tags[0].totalHoras = 0;
+                tags[0].data_str = atual;
 
                 //console.log("BEM VENDO AOS SISPRO - BOM DIA");
                 console.log(" 		NOME		|	HORARIO DE ENTRADA	|	HORARIO DE SAIDA		| 	HORAS TRABALHADAS		|" + "\n" + 
-                "|       "  + bd[0].nome + "            |         " + bd[0].input + "      |          " + bd[0].output + "      |         " + bd[0].totalHoras + "      |");
+                "|       "  + tags[0].nome + "            |         " + tags[0].input + "      |          " + tags[0].output + "      |         " + tags[0].totalHoras + "      |");
 
                 //message_tag = "0";
                 cont++;
@@ -126,34 +113,34 @@ broker.on('message', (topic, message_tag) => {
             if(cont == 1){
                 var atual = new Date();
                 var str_data = atual.toString();
-                var data_passad = bd[0].input.toString();
+                var data_passad = tags[0].input.toString();
                 
-                bd[0].output = str_data.substring(0,str_data.indexOf(":") + 6);
+                tags[0].output = str_data.substring(0,str_data.indexOf(":") + 6);
                 console.log("cont: 0>  " + cont);
-                //bd[0].output = atual
+                //tags[0].output = atual
 
-                //bd[0].totalHoras = (str_data.substring(str_data.indexOf(":") - 2, str_data.indexOf(":"))  - (data_passad.substring(data_passad.indexOf(":") - 2, data_passad.indexOf(":"))) );
-                //bd[4].totalHoras = 14-10;
-                //bd[0].totalHoras = (((atual - new Date(bd[0].data_str)) % (60*1000))/1000).toString() ;
-                bd[0].totalHoras = (((atual - new Date(bd[0].data_str)) % ((1000* 60)*60*24)) / ((1000* 60)*60));
+                //tags[0].totalHoras = (str_data.substring(str_data.indexOf(":") - 2, str_data.indexOf(":"))  - (data_passad.substring(data_passad.indexOf(":") - 2, data_passad.indexOf(":"))) );
+                //tags[4].totalHoras = 14-10;
+                //tags[0].totalHoras = (((atual - new Date(tags[0].data_str)) % (60*1000))/1000).toString() ;
+                tags[0].totalHoras = (((atual - new Date(tags[0].data_str)) % ((1000* 60)*60*24)) / ((1000* 60)*60));
 
                 cont = 0;
                 atual.toDateString()  
             }
             //break;
-            case bd[1].tag.toString():
+            case tags[1].tag.toString():
                 console.log("BEM VENDO AOS SISPRO - BOM DIA");
                 if(cont == 0){
                     var atual = new Date();
                     var str_data = atual.toString();
                     
-                    bd[1].input = str_data.substring(0,str_data.indexOf(":") + 6);
-                    //bd[0].totalHoras = 0;
-                    bd[1].data_str = atual;
+                    tags[1].input = str_data.substring(0,str_data.indexOf(":") + 6);
+                    //tags[0].totalHoras = 0;
+                    tags[1].data_str = atual;
     
                     //console.log("BEM VENDO AOS SISPRO - BOM DIA");
                     console.log(" 		NOME		|	HORA DE ENTRADA	|	HORA DE SAIDA		| 	HORAS TRABALHADAS		|" + "\n" + 
-                    "|       "  + bd[1].nome + "      |         " + bd[1].input + "      |          " + bd[1].output + "      |         " + bd[1].totalHoras + "      |");
+                    "|       "  + tags[1].nome + "      |         " + tags[1].input + "      |          " + tags[1].output + "      |         " + tags[1].totalHoras + "      |");
     
                     //message_tag = "0";
                     cont++;
@@ -162,16 +149,16 @@ broker.on('message', (topic, message_tag) => {
                 if(cont == 1){
                     var atual = new Date();
                     var str_data = atual.toString();
-                    var data_passad = bd[1].input.toString();
+                    var data_passad = tags[1].input.toString();
                     
-                    bd[1].output = str_data.substring(0,str_data.indexOf(":") + 6);
+                    tags[1].output = str_data.substring(0,str_data.indexOf(":") + 6);
                     console.log("cont: 0>  " + cont);
-                    //bd[0].output = atual
+                    //tags[0].output = atual
     
-                    //bd[0].totalHoras = (str_data.substring(str_data.indexOf(":") - 2, str_data.indexOf(":"))  - (data_passad.substring(data_passad.indexOf(":") - 2, data_passad.indexOf(":"))) );
-                    //bd[4].totalHoras = 14-10;
-                    //bd[0].totalHoras = (((atual - new Date(bd[0].data_str)) % (60*1000))/1000).toString() ;
-                    bd[1].totalHoras = (((atual - new Date(bd[1].data_str)) % ((1000* 60)*60*24)) / ((1000* 60)*60));
+                    //tags[0].totalHoras = (str_data.substring(str_data.indexOf(":") - 2, str_data.indexOf(":"))  - (data_passad.substring(data_passad.indexOf(":") - 2, data_passad.indexOf(":"))) );
+                    //tags[4].totalHoras = 14-10;
+                    //tags[0].totalHoras = (((atual - new Date(tags[0].data_str)) % (60*1000))/1000).toString() ;
+                    tags[1].totalHoras = (((atual - new Date(tags[1].data_str)) % ((1000* 60)*60*24)) / ((1000* 60)*60));
     
                     cont = 0;
                     atual.toDateString()  
@@ -180,16 +167,16 @@ broker.on('message', (topic, message_tag) => {
         default:
             console.log("");
         
-        //case message_tag == bd[0-3].nome
+        //case message_tag == tags[0-3].nome
 
     }
 
 
     /*
     switch(cont_hora){
-        case title = " A123":
+        case nome = " A123":
             cont_hora = 10;
-            const tag = {title, cont_hora};
+            const tag = {nome, cont_hora};
             tag.push(tags);
     }
     */
@@ -215,7 +202,7 @@ var segundos = Math.floor((diferenca % _minuto) / _segundo);
 for(var i = 1; i < 100000000;i++){
 
 }
-//console.log(bd[].nome);
+//console.log(tags[].nome);
 console.log(atual + "atual");
 console.log(fim + "fim");
 console.log((diferenca/_dia)/365 + "s");
@@ -235,16 +222,16 @@ console.log((diferenca/_dia)/365 + "s");
         var cont_hora = message_tag;
        // message_tag = "A123";
         switch(message_tag){
-            case bd[0].tag:
-                bd[0].input = "10:00:00";
-                bd[3].totalHoras = 0;
+            case tags[0].tag:
+                tags[0].input = "10:00:00";
+                tags[3].totalHoras = 0;
                 console.log("BEM VENDO AOS SISPRO - BOM DIA");
-                console.log(bd[0]);
+                console.log(tags[0]);
                 message_tag = "0";
                 cont +=1;
                 if(cont == 2){
-                    bd[0].output = "14:00:00";
-                    bd[0].totalHoras = 14-10;
+                    tags[0].output = "14:00:00";
+                    tags[0].totalHoras = 14-10;
                     cont = 0;
                     
                 }
@@ -254,7 +241,7 @@ console.log((diferenca/_dia)/365 + "s");
                 console.log(" Default");
                 break;
             
-            //case message_tag == bd[0-3].nome
+            //case message_tag == tags[0-3].nome
     
         }
         //leitor.close();

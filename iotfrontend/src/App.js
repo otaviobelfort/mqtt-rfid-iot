@@ -16,11 +16,11 @@ function App(){
 
     return(
         <>
-            <Header title = "TAGS"/>
+            <Header title = "SISPRO TAGS"/>
 
 
             <ul>
-                {tags.map(tag =><li key = {tag.title} >{tag.title} trabalhou {tag.time}  hora(s)</li>)}
+                {tags.map(tag =><li key = {tag.tag} >{tag.nome} ({tag.tag}) trabalhou {tag.totalHoras}  hora(s)</li>)}
             </ul>
 
         </>
