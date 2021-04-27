@@ -81,8 +81,8 @@ app.get('/tags', (request, response) => {
 });
 
 var bd = [
-    {tag: "A123", nome: "Otávio Belfor", input: "", output: "", totalHoras: 0, data_str:""},
-    {tag: "B123", nome: "José Vitor", input: "", output:"", totalHoras: 0, data_str:""},
+    {tag: "E010591B", nome: "Otávio Belfor", input: "", output: "", totalHoras: 0, data_str:""},
+    {tag: "9AD2A839", nome: "José Vitor", input: "", output:"", totalHoras: 0, data_str:""},
     {tag: "C123", nome: "Rodrigo Silva", input: "", output:"", totalHoras: 0, data_str:""},
     {tag: "D123", nome: "Mario Gorge", input: "", output:"", totalHoras: 0, data_str:""},
 ];
@@ -116,7 +116,9 @@ broker.on('message', (topic, message_tag) => {
                 bd[0].data_str = atual;
 
                 //console.log("BEM VENDO AOS SISPRO - BOM DIA");
-                console.log(bd[0]);
+                console.log(" 		NOME		|	HORARIO DE ENTRADA	|	HORARIO DE SAIDA		| 	HORAS TRABALHADAS		|" + "\n" + 
+                "|       "  + bd[0].nome + "            |         " + bd[0].input + "      |          " + bd[0].output + "      |         " + bd[0].totalHoras + "      |");
+
                 //message_tag = "0";
                 cont++;
                 console.log("cont: 1>  " + cont);
@@ -139,9 +141,44 @@ broker.on('message', (topic, message_tag) => {
                 atual.toDateString()  
             }
             //break;
+            case bd[1].tag.toString():
+                console.log("BEM VENDO AOS SISPRO - BOM DIA");
+                if(cont == 0){
+                    var atual = new Date();
+                    var str_data = atual.toString();
+                    
+                    bd[1].input = str_data.substring(0,str_data.indexOf(":") + 6);
+                    //bd[0].totalHoras = 0;
+                    bd[1].data_str = atual;
+    
+                    //console.log("BEM VENDO AOS SISPRO - BOM DIA");
+                    console.log(" 		NOME		|	HORA DE ENTRADA	|	HORA DE SAIDA		| 	HORAS TRABALHADAS		|" + "\n" + 
+                    "|       "  + bd[1].nome + "      |         " + bd[1].input + "      |          " + bd[1].output + "      |         " + bd[1].totalHoras + "      |");
+    
+                    //message_tag = "0";
+                    cont++;
+                    console.log("cont: 1>  " + cont);
+                }
+                if(cont == 1){
+                    var atual = new Date();
+                    var str_data = atual.toString();
+                    var data_passad = bd[1].input.toString();
+                    
+                    bd[1].output = str_data.substring(0,str_data.indexOf(":") + 6);
+                    console.log("cont: 0>  " + cont);
+                    //bd[0].output = atual
+    
+                    //bd[0].totalHoras = (str_data.substring(str_data.indexOf(":") - 2, str_data.indexOf(":"))  - (data_passad.substring(data_passad.indexOf(":") - 2, data_passad.indexOf(":"))) );
+                    //bd[4].totalHoras = 14-10;
+                    //bd[0].totalHoras = (((atual - new Date(bd[0].data_str)) % (60*1000))/1000).toString() ;
+                    bd[1].totalHoras = (((atual - new Date(bd[1].data_str)) % ((1000* 60)*60*24)) / ((1000* 60)*60));
+    
+                    cont = 0;
+                    atual.toDateString()  
+                }
         
         default:
-            console.log(" ---------- | --------- > " + a == b );
+            console.log("");
         
         //case message_tag == bd[0-3].nome
 
@@ -168,19 +205,16 @@ var _hora = _minuto * 60;
 var _dia = _hora * 24;
 
 var atual = new Date();
-var fim = new Date('06/02/2017 18:00:00');
+var fim = new Date('06/02/2019 18:00:00');
 
 var diferenca = fim - atual;
-
 var dias = Math.floor(diferenca / _dia);
 var horas = Math.floor((diferenca % _dia) / _hora);
 var minutos = Math.floor((diferenca % _hora) / _minuto);
 var segundos = Math.floor((diferenca % _minuto) / _segundo);
-
 for(var i = 1; i < 100000000;i++){
 
 }
-
 //console.log(bd[].nome);
 console.log(atual + "atual");
 console.log(fim + "fim");
@@ -190,9 +224,9 @@ console.log((diferenca/_dia)/365 + "s");
 
 
 
-    leitor.question("Qual módulo pra ler dados no node.js?\n", function(answer) {
+    leitor.question("Input Tag: \n", function(answer) {
         var message_tag = answer;
-        console.log("\nSua resposta '" + message_tag + "' foi grava com sucesso numa variável inútil");
+        console.log("\nSua resposta '" + message_tag + "' foi gravada com sucesso numa variável");
         
 //var message_tag = "A123";
         //console.log(`    >>>>>>> Mensagem recebida do tópico ${topic} - tag-rfid ${message_tag}`);
