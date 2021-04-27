@@ -10,6 +10,7 @@
 //WiFi
 const char* SSID = "OBS";                // SSID / nome da rede WiFi que deseja se conectar
 const char* PASSWORD = "otaviobelfort";   // Senha da rede WiFi que deseja se conectar
+const char* tag_str = "";
 
 //_____________________________
 // objetos
@@ -44,7 +45,7 @@ void setup() {
 
 void loop() {
   mantemConexoes();
-  enviaValores();
+  enviaValores("");
   MQTT.loop();
 }
 
@@ -94,16 +95,19 @@ void conectaMQTT() {
     }
 }
 
-void enviaValores() {
+String enviaValores(String tag_st) {
+        tag_st = tag("");
 
-  //Botao Apertado     
-        MQTT.publish(TOPIC_PUBLISH, "AA0B01");
-        Serial.println("Publish tag.");
-  delay(2000);
-  //Botao Solto
-        MQTT.publish(TOPIC_PUBLISH, "0");
-        Serial.println("Publish 0");
-    
+        if (!tag("")) {  
+        MQTT.publish(TOPIC_PUBLISH,tag_str );
+        Serial.println("Publish  : 0");
+        }
+
+        else{
+        MQTT.publish(TOPIC_PUBLISH, tag_str);
+        Serial.print("Publish tag :  ");
+        Serial.print(tag(""));
+        }
 }
 
 
