@@ -7,7 +7,7 @@
 ### $yarn install
 ### $yarn start
 
-## frontend
+## Frontend
 ### $cd iotfrontend
 ### $yarn install
 ### $yarn start
