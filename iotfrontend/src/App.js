@@ -20,7 +20,7 @@ function App(){
 
 
             <ul>
-                {tags.map(tag =><li key = {tag.tag} >{tag.nome} ({tag.tag}) trabalhou {tag.totalHoras}  hora(s)</li>)}
+                {tags.map(tag =><li key = {tag.tag} >{tag.nome} ({tag.tag}) entrada: {tag.input} saída: {tag.output} tempo trabalhado {tag.totalHoras}  (s)</li>)}
             </ul>
 
         </>
