@@ -12,5 +12,5 @@
 ### $yarn install
 ### $yarn start
 
-![Screenshot](imagem1.png)
-![Screenshot](imagem2.png)
+![Screenshot](imagem1.jpg)
+
